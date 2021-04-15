@@ -21,9 +21,12 @@ mongoose.connect(
 	}
 );
 
+// App Middleware
+app.use(express.json());
+
 // Route Middlewares
 app.get('/', (req, res) => {
-	res.send('Server Reached!');
+	res.send('Server Running!');
 });
 
 app.use('/api/user', authRoute);
