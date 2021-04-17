@@ -40,6 +40,7 @@ router.post('/register', async (req, res) => {
 				uid: savedUser._id,
 				email: savedUser.email,
 				type: savedUser.type,
+				category: savedUser.category,
 				ratings: savedUser.ratings,
 				schedule: savedUser.schedule,
 			},
@@ -93,6 +94,7 @@ router.post('/login', async (req, res) => {
 				type: registeredUser.type,
 				ratings: registeredUser.ratings,
 				schedule: registeredUser.schedule,
+				category: registeredUser.category,
 			},
 			token,
 		});

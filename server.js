@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const authRoute = require('./routes/authRoute');
+const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
+const verifyToken = require('./routes/verifyToken');
 
 // Initialize App
 const app = express();
@@ -30,8 +32,9 @@ app.get('/', (req, res) => {
 	res.send('Server Running!');
 });
 
-app.use('/api/user', authRoute);
+app.use('/api/auth', authRoute);
 app.use('/api/test', testRoute);
+app.use('/api/user', verifyToken, userRoute);
 
 app.listen(PORT, () => {
 	console.log(`Server running on port: ${PORT}`);

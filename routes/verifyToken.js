@@ -1,11 +1,18 @@
 const jwt = require('jsonwebtoken');
+const User = require('../models/User');
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
 	const token = req.header('auth-token');
 	if (!token) return res.status(401).json({ error: 'Access Denied' });
 
 	try {
 		const verified = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+		const isValidUser = await User.findById(verified.uid);
+
+		if (!isValidUser) {
+			return res.status(404).json({ error: 'User not found.' });
+		}
+
 		req.user = verified;
 		next();
 	} catch (error) {
