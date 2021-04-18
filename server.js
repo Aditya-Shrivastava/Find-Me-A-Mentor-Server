@@ -36,6 +36,10 @@ app.use('/api/auth', authRoute);
 app.use('/api/test', testRoute);
 app.use('/api/user', verifyToken, userRoute);
 
+app.use('/', (req, res) => {
+	res.status(400).json({ error: 'Invalid URL' });
+});
+
 app.listen(PORT, () => {
 	console.log(`Server running on port: ${PORT}`);
 });
