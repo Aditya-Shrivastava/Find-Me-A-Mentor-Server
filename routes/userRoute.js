@@ -2,7 +2,10 @@ const router = require('express').Router();
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
+const { fetchUserDetails } = require('../controllers/userController');
+
 // Fetch user details
+router.get('/:uid', fetchUserDetails);
 
 // Delete user from DB
 router.delete('/delete', async (req, res) => {
