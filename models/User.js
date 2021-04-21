@@ -27,6 +27,14 @@ const UserSchema = new mongoose.Schema(
 			type: String,
 			default: null,
 		},
+		image: {
+			type: String,
+			default: null,
+		},
+		bio: {
+			type: String,
+			default: null,
+		},
 		ratings: [
 			{
 				uid: String,

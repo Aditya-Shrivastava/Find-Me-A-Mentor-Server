@@ -37,12 +37,14 @@ router.post('/register', async (req, res) => {
 		res.status(201).json({
 			user: {
 				username: savedUser.username,
-				uid: savedUser._id,
+				uid: savedUser.id,
 				email: savedUser.email,
 				type: savedUser.type,
 				category: savedUser.category,
 				ratings: savedUser.ratings,
 				schedule: savedUser.schedule,
+				image: savedUser.image,
+				bio: savedUser.bio,
 			},
 		});
 	} catch (error) {
@@ -75,7 +77,7 @@ router.post('/login', async (req, res) => {
 	// Create and assign token
 	const token = jwt.sign(
 		{
-			uid: registeredUser._id,
+			uid: registeredUser.id,
 			username: registeredUser.username,
 			email: registeredUser.email,
 			type: registeredUser.type,
@@ -89,12 +91,14 @@ router.post('/login', async (req, res) => {
 		.json({
 			user: {
 				username: registeredUser.username,
-				uid: registeredUser._id,
+				uid: registeredUser.id,
 				email: registeredUser.email,
 				type: registeredUser.type,
 				ratings: registeredUser.ratings,
 				schedule: registeredUser.schedule,
 				category: registeredUser.category,
+				image: registeredUser.image,
+				bio: registeredUser.bio,
 			},
 			token,
 		});

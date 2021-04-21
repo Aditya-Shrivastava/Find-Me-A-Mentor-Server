@@ -12,23 +12,20 @@ const fetchUserDetails = async (req, res) => {
 	res.status(200).json({
 		user: {
 			username: userDetails.username,
-			uid: userDetails._id,
+			uid: userDetails.id,
 			email: userDetails.email,
 			type: userDetails.type,
 			category: userDetails.category,
 			ratings: userDetails.ratings,
 			schedule: userDetails.schedule,
+			image: userDetails.image,
+			bio: userDetails.bio,
 		},
 	});
 };
 
 const updateUserDetails = async (req, res) => {
 	const uid = req.params.uid;
-	const { type, category } = req.body;
-
-	if (!type || !category) {
-		return res.status(400).json({ error: 'Bad Request' });
-	}
 
 	try {
 		const updatedUser = await User.findByIdAndUpdate(uid, req.body, {
@@ -37,18 +34,22 @@ const updateUserDetails = async (req, res) => {
 		res.status(200).json({
 			user: {
 				username: updatedUser.username,
-				uid: updatedUser._id,
+				uid: updatedUser.id,
 				email: updatedUser.email,
 				type: updatedUser.type,
 				category: updatedUser.category,
 				ratings: updatedUser.ratings,
 				schedule: updatedUser.schedule,
+				image: updatedUser.image,
+				bio: updatedUser.bio,
 			},
 		});
 	} catch (error) {
 		res.status(500).json(error);
 	}
 };
+
+const updateUserImage = async (req, res) => {};
 
 const deleteUser = async (req, res) => {
 	const uid = req.params.uid;
@@ -75,4 +76,5 @@ const deleteUser = async (req, res) => {
 
 exports.fetchUserDetails = fetchUserDetails;
 exports.updateUserDetails = updateUserDetails;
+exports.updateUserImage = updateUserImage;
 exports.deleteUser = deleteUser;
