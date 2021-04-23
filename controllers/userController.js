@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
@@ -49,7 +51,49 @@ const updateUserDetails = async (req, res) => {
 	}
 };
 
-const updateUserImage = async (req, res) => {};
+const updateUserImage = async (req, res) => {
+	const uid = req.params.uid;
+	const userDetails = await User.findById(uid);
+
+	if (!userDetails) {
+		return res.status(404).json({ error: 'User not found.' });
+	}
+
+	if (!req.file) {
+		return res.status(404).json({ error : 'No file found, please try again.' });
+	}
+
+	const imagePath = userDetails.image;
+
+	try {
+
+		if (imagePath) {
+			fs.unlink(imagePath, err => {
+				console.log(err);
+			});
+		}
+
+		const updatedUser = await User.findByIdAndUpdate(uid, {image : req.file.path}, {
+			new: true,
+		});
+
+		res.status(200).json({
+			user: {
+				username: updatedUser.username,
+				uid: updatedUser.id,
+				email: updatedUser.email,
+				type: updatedUser.type,
+				category: updatedUser.category,
+				ratings: updatedUser.ratings,
+				schedule: updatedUser.schedule,
+				image: updatedUser.image,
+				bio: updatedUser.bio,
+			},
+		});
+	} catch (error) {
+		res.status(500).json(error);
+	}
+};
 
 const deleteUser = async (req, res) => {
 	const uid = req.params.uid;
@@ -66,7 +110,14 @@ const deleteUser = async (req, res) => {
 		return res.status(400).json({ error: 'Invalid password.' });
 	}
 
+	const imagePath = user.image;
+
 	try {
+		if (imagePath) {
+			fs.unlink(imagePath, err => {
+				console.log(err);
+			});
+		}
 		await user.delete();
 		res.status(200).json({ message: 'User deleted successfully.' });
 	} catch (error) {

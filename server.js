@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const authRoute = require('./routes/authRoute');
@@ -26,6 +28,8 @@ mongoose.connect(
 
 // App Middleware
 app.use(express.json());
+app.use(cors());
+app.use('/uploads/images', express.static(path.join('uploads', 'images')))
 
 // Route Middlewares
 app.get('/', (req, res) => {
