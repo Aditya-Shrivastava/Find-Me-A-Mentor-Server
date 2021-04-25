@@ -23,7 +23,7 @@ const addTestimonial = async (req, res) => {
 
 	try {
 		await testimonial.save();
-		res.status(200).json(testimonial.toObject({ getters: true }));
+		res.status(200).json(testimonial);
 	} catch (error) {
 		res.status(400).json(error);
 	}

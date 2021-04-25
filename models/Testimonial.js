@@ -12,6 +12,7 @@ const TestimonialSchema = mongoose.Schema({
 	body: {
 		type: String,
 		required: true,
+		maxLength: 140,
 	},
 	category: {
 		type: String,
