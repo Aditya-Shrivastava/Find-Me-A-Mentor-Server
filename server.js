@@ -7,6 +7,7 @@ require('dotenv').config();
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
+const testimonialRoute = require('./routes/testimonialRoute');
 const verifyToken = require('./routes/verifyToken');
 
 // Initialize App
@@ -29,16 +30,18 @@ mongoose.connect(
 // App Middleware
 app.use(express.json());
 app.use(cors());
-app.use('/uploads/images', express.static(path.join('uploads', 'images')))
+app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 // Route Middlewares
 app.get('/', (req, res) => {
 	res.send('Server Running!');
 });
 
-app.use('/api/auth', authRoute);
 app.use('/api/test', testRoute);
+
+app.use('/api/auth', authRoute);
 app.use('/api/user', verifyToken, userRoute);
+app.use('/api/testimonials', testimonialRoute);
 
 app.use('/', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
