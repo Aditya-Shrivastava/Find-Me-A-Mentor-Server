@@ -8,6 +8,7 @@ const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
 const testimonialRoute = require('./routes/testimonialRoute');
+const categoryRoute = require('./routes/categoryRoute');
 const verifyToken = require('./routes/verifyToken');
 
 // Initialize App
@@ -42,6 +43,7 @@ app.use('/api/test', testRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/user', verifyToken, userRoute);
 app.use('/api/testimonials', testimonialRoute);
+app.use('/api/categories', categoryRoute);
 
 app.use('/', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
