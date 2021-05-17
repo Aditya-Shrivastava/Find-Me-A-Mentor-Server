@@ -34,6 +34,19 @@ router.post('/register', async (req, res) => {
 
 	try {
 		const savedUser = await user.save();
+
+		// Create and assign token
+		const token = jwt.sign(
+			{
+				uid: savedUser.id,
+				username: savedUser.username,
+				email: savedUser.email,
+				type: savedUser.type,
+			},
+			process.env.ACCESS_TOKEN_SECRET,
+			{ expiresIn: '12h' }
+		);
+
 		res.status(201).json({
 			user: {
 				username: savedUser.username,
@@ -46,6 +59,7 @@ router.post('/register', async (req, res) => {
 				image: savedUser.image,
 				bio: savedUser.bio,
 			},
+			token,
 		});
 	} catch (error) {
 		res.status(400).json(error);
@@ -86,22 +100,20 @@ router.post('/login', async (req, res) => {
 		{ expiresIn: '12h' }
 	);
 
-	res.status(200)
-		.header('auth-token', token)
-		.json({
-			user: {
-				username: registeredUser.username,
-				uid: registeredUser.id,
-				email: registeredUser.email,
-				type: registeredUser.type,
-				ratings: registeredUser.ratings,
-				schedule: registeredUser.schedule,
-				category: registeredUser.category,
-				image: registeredUser.image,
-				bio: registeredUser.bio,
-			},
-			token,
-		});
+	res.status(200).json({
+		user: {
+			username: registeredUser.username,
+			uid: registeredUser.id,
+			email: registeredUser.email,
+			type: registeredUser.type,
+			ratings: registeredUser.ratings,
+			schedule: registeredUser.schedule,
+			category: registeredUser.category,
+			image: registeredUser.image,
+			bio: registeredUser.bio,
+		},
+		token,
+	});
 });
 
 module.exports = router;
