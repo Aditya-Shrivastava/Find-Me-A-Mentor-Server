@@ -5,7 +5,7 @@ const {
 	addCategory,
 	deleteCategory,
 } = require('../controllers/categoryController');
-const verifyToken = require('./verifyToken');
+const verifyToken = require('../middleware/verifyToken');
 
 // Fetch all categories
 router.get('/', fetchCategories);

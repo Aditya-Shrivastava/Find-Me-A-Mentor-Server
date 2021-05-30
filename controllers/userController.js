@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const fetchUserDetails = async (req, res) => {
 	const uid = req.params.uid;
-	const userDetails = await User.findById(uid);
+	const userDetails = await User.findById(uid).lean();
 
 	if (!userDetails) {
 		return res.status(404).json({ error: 'User not found.' });
@@ -14,7 +14,7 @@ const fetchUserDetails = async (req, res) => {
 	res.status(200).json({
 		user: {
 			username: userDetails.username,
-			uid: userDetails.id,
+			uid: userDetails._id,
 			email: userDetails.email,
 			type: userDetails.type,
 			category: userDetails.category,
@@ -32,11 +32,11 @@ const updateUserDetails = async (req, res) => {
 	try {
 		const updatedUser = await User.findByIdAndUpdate(uid, req.body, {
 			new: true,
-		});
+		}).lean();
 		res.status(200).json({
 			user: {
 				username: updatedUser.username,
-				uid: updatedUser.id,
+				uid: updatedUser._id,
 				email: updatedUser.email,
 				type: updatedUser.type,
 				category: updatedUser.category,
@@ -53,34 +53,39 @@ const updateUserDetails = async (req, res) => {
 
 const updateUserImage = async (req, res) => {
 	const uid = req.params.uid;
-	const userDetails = await User.findById(uid);
+	const userDetails = await User.exists(uid).lean();
 
 	if (!userDetails) {
 		return res.status(404).json({ error: 'User not found.' });
 	}
 
 	if (!req.file) {
-		return res.status(404).json({ error : 'No file found, please try again.' });
+		return res
+			.status(404)
+			.json({ error: 'No file found, please try again.' });
 	}
 
 	const imagePath = userDetails.image;
 
 	try {
-
 		if (imagePath) {
-			fs.unlink(imagePath, err => {
+			fs.unlink(imagePath, (err) => {
 				console.log(err);
 			});
 		}
 
-		const updatedUser = await User.findByIdAndUpdate(uid, {image : req.file.path}, {
-			new: true,
-		});
+		const updatedUser = await User.findByIdAndUpdate(
+			uid,
+			{ image: req.file.path },
+			{
+				new: true,
+			}
+		).lean();
 
 		res.status(200).json({
 			user: {
 				username: updatedUser.username,
-				uid: updatedUser.id,
+				uid: updatedUser._id,
 				email: updatedUser.email,
 				type: updatedUser.type,
 				category: updatedUser.category,
@@ -97,7 +102,7 @@ const updateUserImage = async (req, res) => {
 
 const deleteUser = async (req, res) => {
 	const uid = req.params.uid;
-	const user = await User.findById(uid);
+	const user = await User.findById(uid).lean();
 	const password = req.body.password;
 
 	if (!password) {
@@ -114,7 +119,7 @@ const deleteUser = async (req, res) => {
 
 	try {
 		if (imagePath) {
-			fs.unlink(imagePath, err => {
+			fs.unlink(imagePath, (err) => {
 				console.log(err);
 			});
 		}

@@ -4,7 +4,7 @@ const {
 	addTestimonial,
 	deleteTestimonial,
 } = require('../controllers/testimonialController');
-const verifyToken = require('./verifyToken');
+const verifyToken = require('../middleware/verifyToken');
 
 // Fetch all testimonials
 router.get('/', fetchTestimonials);

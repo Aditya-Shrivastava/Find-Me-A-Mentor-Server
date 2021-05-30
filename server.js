@@ -4,12 +4,13 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
+const verifyToken = require('./middleware/verifyToken');
+
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
 const testimonialRoute = require('./routes/testimonialRoute');
 const categoryRoute = require('./routes/categoryRoute');
-const verifyToken = require('./routes/verifyToken');
 
 // Initialize App
 const app = express();
