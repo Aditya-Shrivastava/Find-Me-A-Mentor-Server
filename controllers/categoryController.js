@@ -9,7 +9,7 @@ const fetchCategories = async (req, res) => {
 const fetchCategoryMentors = async (req, res) => {
 	const cname = req.params.cname;
 
-	let mentors = await User.find({ category: cname });
+	let mentors = await User.find({ category: cname }).lean();
 
 	if (!mentors) {
 		return res
@@ -22,7 +22,8 @@ const fetchCategoryMentors = async (req, res) => {
 			mentors.map((mentor) => ({
 				username: mentor.username,
 				image: mentor.image,
-				uid: mentor.id,
+				uid: mentor._id,
+				bio: mentor.bio,
 			})),
 		],
 	});

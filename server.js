@@ -11,6 +11,7 @@ const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
 const testimonialRoute = require('./routes/testimonialRoute');
 const categoryRoute = require('./routes/categoryRoute');
+const search = require('./controllers/searchController');
 
 // Initialize App
 const app = express();
@@ -41,10 +42,11 @@ app.get('/', (req, res) => {
 
 app.use('/api/test', testRoute);
 
-app.use('/api/auth', authRoute);
-app.use('/api/user', verifyToken, userRoute);
-app.use('/api/testimonials', testimonialRoute);
-app.use('/api/categories', categoryRoute);
+app.use('/api/v1/auth', authRoute);
+app.use('/api/v1/user', verifyToken, userRoute);
+app.use('/api/v1/testimonials', testimonialRoute);
+app.use('/api/v1/categories', categoryRoute);
+app.use('/api/v1/search', search);
 
 app.use('/', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
