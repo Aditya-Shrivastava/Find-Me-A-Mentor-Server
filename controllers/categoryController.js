@@ -18,14 +18,12 @@ const fetchCategoryMentors = async (req, res) => {
 	}
 
 	res.status(200).json({
-		mentors: [
-			mentors.map((mentor) => ({
-				username: mentor.username,
-				image: mentor.image,
-				uid: mentor._id,
-				bio: mentor.bio,
-			})),
-		],
+		mentors: mentors.map((mentor) => ({
+			username: mentor.username,
+			image: mentor.image,
+			uid: mentor._id,
+			bio: mentor.bio,
+		})),
 	});
 };
 
