@@ -21,7 +21,7 @@ const fetchCategoryMentors = async (req, res) => {
 		mentors: mentors.map((mentor) => ({
 			username: mentor.username,
 			image: mentor.image,
-			uid: mentor._id,
+			id: mentor._id,
 			bio: mentor.bio,
 		})),
 	});
