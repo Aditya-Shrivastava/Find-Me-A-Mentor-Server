@@ -48,7 +48,7 @@ app.use('/api/v1/testimonials', testimonialRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/search', search);
 
-app.use('/', (req, res) => {
+app.use('*', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
 });
 

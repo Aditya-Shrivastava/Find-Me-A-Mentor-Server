@@ -2,7 +2,7 @@ const Category = require('../models/Category');
 const User = require('../models/User');
 
 const fetchCategories = async (req, res) => {
-	const categories = await Category.find();
+	const categories = await Category.find().lean();
 	res.status(200).json(categories);
 };
 
