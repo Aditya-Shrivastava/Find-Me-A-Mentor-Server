@@ -11,6 +11,8 @@ const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
 const testimonialRoute = require('./routes/testimonialRoute');
 const categoryRoute = require('./routes/categoryRoute');
+const slotRoute = require('./routes/slotRoute');
+
 const search = require('./controllers/searchController');
 
 // Initialize App
@@ -37,7 +39,7 @@ app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 // Route Middlewares
 app.get('/', (req, res) => {
-	res.send('Server Running!');
+	res.send('✅ Server Running!');
 });
 
 app.use('/api/test', testRoute);
@@ -47,6 +49,7 @@ app.use('/api/v1/user', verifyToken, userRoute);
 app.use('/api/v1/testimonials', testimonialRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/search', search);
+app.use('/api/v1/slot', verifyToken, slotRoute);
 
 app.use('*', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
