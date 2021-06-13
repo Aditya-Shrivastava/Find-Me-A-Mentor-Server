@@ -10,11 +10,13 @@ const SlotSchema = mongoose.Schema({
 		required: true,
 	},
 	creator: {
-		type: String,
+		type: mongoose.Types.ObjectId,
 		required: true,
+		ref: 'User',
 	},
 	booker: {
-		type: String,
+		type: mongoose.Types.ObjectId,
+		ref: 'User',
 		default: null,
 	},
 	isBooked: {

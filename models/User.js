@@ -15,10 +15,6 @@ const UserSchema = new mongoose.Schema(
 			required: true,
 			min: 6,
 		},
-		date: {
-			type: Date,
-			default: Date.now,
-		},
 		type: {
 			type: String,
 			required: true,
@@ -29,7 +25,7 @@ const UserSchema = new mongoose.Schema(
 		},
 		image: {
 			type: String,
-			default: null,
+			default: process.env.FIREBASE_STORAGE_IMAGE,
 		},
 		bio: {
 			type: String,
@@ -44,14 +40,9 @@ const UserSchema = new mongoose.Schema(
 		],
 		schedule: [
 			{
-				start: {
-					type: Date,
-					default: Date.now,
-				},
-				end: {
-					type: Date,
-					default: Date.now,
-				},
+				type: mongoose.Types.ObjectId,
+				ref: 'Slot',
+				default: null,
 			},
 		],
 	},
