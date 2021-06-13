@@ -3,7 +3,7 @@ const Testimonial = require('../models/Testimonial');
 const fetchTestimonials = async (req, res) => {
 	const testimonials = await Testimonial.find();
 
-	res.status(200).json(testimonials);
+	res.status(200).json({ testimonials });
 };
 
 const addTestimonial = async (req, res) => {
@@ -23,9 +23,9 @@ const addTestimonial = async (req, res) => {
 
 	try {
 		await testimonial.save();
-		res.status(200).json(testimonial);
+		res.status(200).json({ testimonial });
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(400).json({ error });
 	}
 };
 
@@ -41,7 +41,7 @@ const deleteTestimonial = async (req, res) => {
 		await testimonial.delete();
 		res.status(200).json({ message: 'Testimonial deleted successfully' });
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(400).json({ error });
 	}
 };
 

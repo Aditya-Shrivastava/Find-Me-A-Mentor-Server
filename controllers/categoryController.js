@@ -3,7 +3,7 @@ const User = require('../models/User');
 
 const fetchCategories = async (req, res) => {
 	const categories = await Category.find().lean();
-	res.status(200).json(categories);
+	res.status(200).json({ categories });
 };
 
 const fetchCategoryMentors = async (req, res) => {
@@ -34,7 +34,7 @@ const addCategory = async (req, res) => {
 		await category.save();
 		res.status(201).json({ message: 'New category added' });
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(400).json({ error });
 	}
 };
 
@@ -50,7 +50,7 @@ const deleteCategory = async (req, res) => {
 		await category.delete();
 		res.status(200).json({ message: 'Category deleted successfully' });
 	} catch (error) {
-		res.status(400).json(error);
+		res.status(400).json({ error });
 	}
 };
 
