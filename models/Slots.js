@@ -2,11 +2,7 @@ const mongoose = require('mongoose');
 
 const SlotSchema = mongoose.Schema({
 	date: {
-		type: String,
-		required: true,
-	},
-	time: {
-		type: String,
+		type: Date,
 		required: true,
 	},
 	creator: {

@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 const addSlot = async (req, res) => {
 	const { uid } = req.user;
-	const { date, time } = req.body;
+	const { date } = req.body;
 
 	const user = await User.findById(uid);
 
@@ -16,7 +16,6 @@ const addSlot = async (req, res) => {
 
 	const slot = new Slot({
 		date,
-		time,
 		creator: uid,
 	});
 
@@ -59,9 +58,13 @@ const fetchUserSlots = async (req, res) => {
 const deleteSlot = async (req, res) => {
 	const { id } = req.params;
 
-	const slot = await Slot.findById(id).populate('creator').populate('booker');
+	const slot = await Slot.findById(id).populate('creator');
 	if (!slot) {
 		return res.status(404).json({ error: 'Slot does not exist' });
+	}
+
+	if (slot.booker) {
+		slot = slot.populate('booker');
 	}
 
 	try {
@@ -70,8 +73,10 @@ const deleteSlot = async (req, res) => {
 		await slot.remove({ session: sess });
 		slot.creator.schedule.pull(slot);
 		await slot.creator.save({ session: sess });
-		slot.booker.schedule.pull(slot);
-		await slot.booker.save({ session: sess });
+		if (slot.booker) {
+			slot.booker.schedule.pull(slot);
+			await slot.booker.save({ session: sess });
+		}
 		sess.commitTransaction();
 		res.status(200).json({ message: 'Slot deleted successfully' });
 	} catch (error) {

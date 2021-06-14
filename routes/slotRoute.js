@@ -6,15 +6,16 @@ const {
 	deleteSlot,
 	bookSlot,
 } = require('../controllers/slotController');
+const verifyToken = require('../middleware/verifyToken');
 
 router.get('/', (req, res) => {
 	res.send('Slots');
 });
 
-router.post('/add', addSlot);
+router.post('/add', verifyToken, addSlot);
 router.get('/:id', fetchSlot);
 router.get('/user/:uid', fetchUserSlots);
-router.delete('/:id', deleteSlot);
-router.get('/book/:id', bookSlot);
+router.delete('/:id', verifyToken, deleteSlot);
+router.get('/book/:id', verifyToken, bookSlot);
 
 module.exports = router;

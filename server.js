@@ -49,7 +49,7 @@ app.use('/api/v1/user', verifyToken, userRoute);
 app.use('/api/v1/testimonials', testimonialRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/search', search);
-app.use('/api/v1/slot', verifyToken, slotRoute);
+app.use('/api/v1/slot', slotRoute);
 
 app.use('*', (req, res) => {
 	res.status(400).json({ error: 'Invalid URL' });
