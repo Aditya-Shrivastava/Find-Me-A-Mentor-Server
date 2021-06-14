@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 app.use('/api/test', testRoute);
 
 app.use('/api/v1/auth', authRoute);
-app.use('/api/v1/user', verifyToken, userRoute);
+app.use('/api/v1/user', userRoute);
 app.use('/api/v1/testimonials', testimonialRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/search', search);
