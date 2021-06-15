@@ -2,7 +2,8 @@ const router = require('express').Router();
 const {
 	addSlot,
 	fetchSlot,
-	fetchUserSlots,
+	fetchMentorSlots,
+	fetchMenteeSlots,
 	deleteSlot,
 	bookSlot,
 } = require('../controllers/slotController');
@@ -14,7 +15,8 @@ router.get('/', (req, res) => {
 
 router.post('/add', verifyToken, addSlot);
 router.get('/:id', fetchSlot);
-router.get('/user/:uid', fetchUserSlots);
+router.get('/mentor/:uid', fetchMentorSlots);
+router.get('/mentee/:uid', fetchMenteeSlots);
 router.delete('/:id', verifyToken, deleteSlot);
 router.get('/book/:id', verifyToken, bookSlot);
 

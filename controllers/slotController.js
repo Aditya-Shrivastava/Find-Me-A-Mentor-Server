@@ -17,6 +17,10 @@ const addSlot = async (req, res) => {
 	const slot = new Slot({
 		date,
 		creator: uid,
+		creator_details: {
+			image: user.image,
+			name: user.username,
+		},
 	});
 
 	try {
@@ -45,26 +49,47 @@ const fetchSlot = async (req, res) => {
 	}
 };
 
-const fetchUserSlots = async (req, res) => {
+const fetchMentorSlots = async (req, res) => {
 	const { uid } = req.params;
 	try {
 		const slots = await Slot.find({ creator: uid }).lean();
 		res.status(200).json({ slots });
 	} catch (error) {
-		res.status(500).json({ error });
+		res.status(500).json({
+			error: 'Could not fetch slots, please try again',
+		});
+	}
+};
+
+const fetchMenteeSlots = async (req, res) => {
+	const { uid } = req.params;
+	try {
+		const slots = await Slot.find({ booker: uid }).lean();
+		res.status(200).json({ slots });
+	} catch (error) {
+		res.status(500).json({
+			error: 'Could not fetch slots, please try again',
+		});
 	}
 };
 
 const deleteSlot = async (req, res) => {
 	const { id } = req.params;
 
-	const slot = await Slot.findById(id).populate('creator');
+	const populateData = [
+		{
+			path: 'creator',
+			model: 'User',
+		},
+		{
+			path: 'booker',
+			model: 'User',
+		},
+	];
+
+	let slot = await Slot.findById(id).populate(populateData);
 	if (!slot) {
 		return res.status(404).json({ error: 'Slot does not exist' });
-	}
-
-	if (slot.booker) {
-		slot = slot.populate('booker');
 	}
 
 	try {
@@ -80,7 +105,9 @@ const deleteSlot = async (req, res) => {
 		sess.commitTransaction();
 		res.status(200).json({ message: 'Slot deleted successfully' });
 	} catch (error) {
-		res.status(500).json({ error });
+		res.status(500).json({
+			error: 'Could not delete slot, please try again',
+		});
 	}
 };
 
@@ -101,17 +128,23 @@ const bookSlot = async (req, res) => {
 		return res.status(400).json({ error: 'Cannot book your own slot' });
 	}
 
+	const booker_details = {
+		name: user.username,
+		image: user.image,
+	};
+
 	try {
 		const sess = await mongoose.startSession();
 		sess.startTransaction();
 		slot.booker = uid;
+		slot.booker_details = booker_details;
 		slot.isBooked = true;
 		await slot.save({ session: sess });
 		user.schedule.push(slot);
 		await user.save({ session: sess });
 		sess.commitTransaction();
 
-		res.status(200).json({ message: 'Slot booked' });
+		res.status(200).json({ slot });
 	} catch (error) {
 		res.status(500).json({ error });
 	}
@@ -120,7 +153,8 @@ const bookSlot = async (req, res) => {
 module.exports = {
 	addSlot,
 	fetchSlot,
-	fetchUserSlots,
+	fetchMentorSlots,
+	fetchMenteeSlots,
 	deleteSlot,
 	bookSlot,
 };
