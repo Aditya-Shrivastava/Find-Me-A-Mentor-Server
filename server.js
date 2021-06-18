@@ -4,8 +4,6 @@ const cors = require('cors');
 const path = require('path');
 require('dotenv').config();
 
-const verifyToken = require('./middleware/verifyToken');
-
 const authRoute = require('./routes/authRoute');
 const userRoute = require('./routes/userRoute');
 const testRoute = require('./routes/testRoute');
@@ -42,7 +40,7 @@ app.get('/', (req, res) => {
 	res.send('✅ Server Running!');
 });
 
-app.use('/api/test', testRoute);
+app.use('/api/v1/test', testRoute);
 
 app.use('/api/v1/auth', authRoute);
 app.use('/api/v1/user', userRoute);

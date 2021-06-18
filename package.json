@@ -1,26 +1,27 @@
 {
-  "name": "fmm-server",
-  "version": "1.0.0",
-  "description": "backend for find me a mentor",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
-  },
-  "author": "Aditya Shrivastava",
-  "license": "ISC",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "joi": "^17.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.3",
-    "multer": "^1.4.2",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+	"name": "fmm-server",
+	"version": "1.0.0",
+	"description": "backend for find me a mentor",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "concurrently \"nodemon server.js\" \"nodemon socket-server.js\""
+	},
+	"author": "Aditya Shrivastava",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"joi": "^17.4.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.12.3",
+		"multer": "^1.4.2",
+		"socket.io": "^4.1.2",
+		"uuid": "^8.3.2"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.7"
+	}
 }
