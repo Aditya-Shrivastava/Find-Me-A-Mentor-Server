@@ -4,26 +4,43 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
 	cors: {
 		origin: 'http://localhost:3000',
-		methods: ['GET', 'POST']
-	}
+		methods: ['GET', 'POST'],
+	},
 });
+const cors = require('cors');
+
+app.use(cors());
 
 io.on('connection', (socket) => {
-	socket.on('join-room', ({ roomId, username }) => {
+	socket.on('join-room', ({ roomId, userId }) => {
+		console.log(`joining room: ${roomId} and sending id: ${userId}`);
 		socket.join(roomId);
-		socket.broadcast.to(roomId).emit('user-connected', username);
-
-		socket.on('send-message', newMessage => {
-			socket.broadcast.to(roomId).emit('receive-message', newMessage);
-		});
-	})
-
-	socket.on("disconnect", () => {
-		console.log('User Left :(');
-		// socket.broadcast.emit("callEnded");
+		socket.broadcast.to(roomId).emit('user-connected', userId);
 	});
 
-	// socket.on("callUser", (data) => )
+	socket.on('send-message', (newMessage) => {
+		console.log('sending message');
+		socket.broadcast
+			.to(newMessage.roomId)
+			.emit('receive-message', newMessage);
+	});
+
+	socket.on('call-user', ({ userToCall, signalData, from, name }) => {
+		console.log(`call to ${userToCall} from ${from}`);
+		io.to(userToCall).emit('call-user', { signal: signalData, from, name });
+	});
+
+	socket.on('answer-call', (data) => {
+		console.log('user answered call');
+		console.log(data.to);
+		io.to(data.to).emit('call-accepted', data.signal);
+	});
+
+	socket.on('disconnect', (roomId) => {
+		console.log('leaving room');
+		socket.leave(roomId);
+		socket.broadcast.to(roomId).emit('call-ended');
+	});
 });
 
 server.listen(5001, () => {
