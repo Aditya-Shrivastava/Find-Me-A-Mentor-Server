@@ -11,6 +11,7 @@ const cors = require('cors');
 require('dotenv').config();
 
 app.use(cors());
+const SOCKET_PORT = process.env.SOCKET_PORT || 5001;
 
 io.on('connection', (socket) => {
 	socket.on('join-room', ({ roomId, userId }) => {
@@ -44,6 +45,6 @@ io.on('connection', (socket) => {
 	});
 });
 
-server.listen(process.env.SOCKET_PORT, () => {
+server.listen(SOCKET_PORT, () => {
 	console.log('✅ Socket Server Running');
 });
