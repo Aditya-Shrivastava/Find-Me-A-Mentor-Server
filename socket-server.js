@@ -3,11 +3,12 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {
 	cors: {
-		origin: 'http://localhost:3000',
+		origin: '*',
 		methods: ['GET', 'POST'],
 	},
 });
 const cors = require('cors');
+require('dotenv').config();
 
 app.use(cors());
 
@@ -43,6 +44,6 @@ io.on('connection', (socket) => {
 	});
 });
 
-server.listen(5001, () => {
+server.listen(process.env.SOCKET_PORT, () => {
 	console.log('✅ Socket Server Running');
 });
